@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import telebot
 from telebot import types
 from image_generator import generate_image
