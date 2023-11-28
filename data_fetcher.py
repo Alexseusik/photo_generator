@@ -18,10 +18,24 @@ def make_request(url, headers=None):
 
 def parse_currency_data(html):
     soup = BeautifulSoup(html, 'html.parser')
-    currency_data = soup.find_all('td', {'class': 'mfm-text-nowrap'})
+    currency_data = soup.find_all('div', {'class': 'sc-1x32wa2-9',
+                                          'type': 'average'})[:4]
+
+    for item in currency_data:
+        for child in item.find_all(recursive=True):
+            child.decompose()
+
+    currency_data = ["{:.2f}".format(float(rate.text.replace(',','.'))) for rate in currency_data]
+
     return {
-        'usd': currency_data[0].get_text(separator=' ').split(),
-        'eur': currency_data[2].get_text(separator=' ').split()
+        'usd': {
+            'buy' : currency_data[0],
+            'sell': currency_data[1]
+        },
+        'eur': {
+            'buy' : currency_data[2],
+            'sell': currency_data[3]
+        }
     }
 
 
@@ -77,7 +91,7 @@ def get_all_data():
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
     }
 
-    currency_url = "https://minfin.com.ua/ua/currency/banks/"
+    currency_url = "https://minfin.com.ua/ua/currency"
     oil_url = "https://index.minfin.com.ua/ua/markets/fuel/"
 
     currency_response = make_request(currency_url, headers)
@@ -89,25 +103,11 @@ def get_all_data():
     all_data = {}
 
     if currency_response and oil_response:
-        currency_rates = parse_currency_data(currency_response.text)
-        oil_prices = parse_oil_data(oil_response.text)
 
-        all_data['currency_rates'] = {
-            'usd': {
-                'buy': round(float(currency_rates['usd'][0].replace(',', '.')), 2),
-                'sell': round(float(currency_rates['usd'][-1].replace(',', '.')), 2)
-            },
-            'eur': {
-                'buy': round(float(currency_rates['eur'][0].replace(',', '.')), 2),
-                'sell': round(float(currency_rates['eur'][-1].replace(',', '.')), 2)
-            }
-        }
+        all_data['currency_rates'] = parse_currency_data(currency_response.text)
 
-        all_data['oil_prices'] = {
-            'A95': float(oil_prices['A95']),
-            'diesel': float(oil_prices['diesel']),
-            'gas': float(oil_prices['gas'])
-        }
+        all_data['oil_prices'] = parse_oil_data(oil_response.text)
+
         all_data['bitcoin_price'] = round(float(get_bitcoin_price()), 2)
 
         cities = ['Київ', 'Одеса', 'Львів', 'Дніпро']
@@ -124,3 +124,5 @@ def get_all_data():
 
     return all_data
 
+
+print(get_all_data())
