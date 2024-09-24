@@ -1,9 +1,10 @@
+import os
 from openai import OpenAI
 from datetime import datetime
 
 today_date = datetime.now().strftime('%d.%m.%Y')
 
-client = OpenAI(api_key="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")
+client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
 
 
 def create_text():
