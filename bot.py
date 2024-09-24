@@ -4,10 +4,12 @@
 import telebot
 from telebot import types
 from image_generator import generate_image
+from chat_text_gen import create_text
 
 # Ваш токен, отриманий від BotFather
 bot_token = '6328902020:AAHYKlkCtqCzcuy5asECY-Gw55FREpuZBJk'
 bot = telebot.TeleBot(bot_token)
+
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
@@ -20,6 +22,7 @@ def send_welcome(message):
     # Відправляємо повідомлення разом із клавіатурою
     bot.send_message(message.chat.id, "Виберіть опцію:", reply_markup=keyboard)
 
+
 @bot.message_handler(commands=['getimage'])
 def send_image(message):
     # Створюємо клавіатуру
@@ -29,9 +32,14 @@ def send_image(message):
     keyboard.add(button_start, button_get_image)
 
     bot.send_message(message.chat.id, "Очікуйте, створюється картинка", reply_markup=keyboard)
+
     image_path = generate_image()
+
+    caption_text = create_text()
+
     with open(image_path, 'rb') as photo:
-        bot.send_photo(message.chat.id, photo)
+        bot.send_photo(message.chat.id, photo, caption=caption_text)
+
 
 if __name__ == '__main__':
     bot.polling()
