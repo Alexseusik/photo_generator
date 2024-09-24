@@ -4,7 +4,8 @@ from datetime import datetime
 
 today_date = datetime.now().strftime('%d.%m.%Y')
 
-client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
+api_key = "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"
+client = OpenAI(api_key=api_key)
 
 
 def create_text():
