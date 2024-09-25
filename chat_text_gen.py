@@ -1,5 +1,4 @@
-import os
-import openai
+import subprocess
 from openai import OpenAI
 from datetime import datetime
 
@@ -8,12 +7,12 @@ today_date = datetime.now().strftime('%d.%m.%Y')
 part1 = "sk-proj-bY2mudDeG2ZSTnBK6jn4bMfH-K6pCiA8hlazQaqX_"
 part2 = "9P5rnbDitIKWK8BiG5mW-5z6Ews8m3hljT3BlbkFJx7mhxQOxJFbu2p-nASlKt4u"
 part3 = "SjNJVovVq08TEQl9h4FzF7B1h497INjw6r3wTCZxmkUWW7K1IQA"
-os.environ['OPENAI_API_KEY'] = part1+part2+part3
 
-apikey = os.environ['OPENAI_API_KEY']
+api_key = part1+part2+part3
 
-openai.api_key = apikey
-client = OpenAI(api_key=apikey)
+subprocess.run(['export', f'OPENAI_API_KEY="{api_key}"'], shell=True)
+
+client = OpenAI(api_key=part1+part2+part3)
 
 
 def create_text():
