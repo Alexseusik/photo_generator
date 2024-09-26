@@ -4,15 +4,8 @@ from datetime import datetime
 
 today_date = datetime.now().strftime('%d.%m.%Y')
 
-part1 = "sk-proj-bY2mudDeG2ZSTnBK6jn4bMfH-K6pCiA8hlazQaqX_"
-part2 = "9P5rnbDitIKWK8BiG5mW-5z6Ews8m3hljT3BlbkFJx7mhxQOxJFbu2p-nASlKt4u"
-part3 = "SjNJVovVq08TEQl9h4FzF7B1h497INjw6r3wTCZxmkUWW7K1IQA"
 
-api_key = part1+part2+part3
-
-subprocess.run(['export', f'OPENAI_API_KEY="{api_key}"'], shell=True)
-
-client = OpenAI(api_key=part1+part2+part3)
+client = OpenAI(organization='org-L0Oyq5kJnJCIAegLaemNPNJF', project='proj_UTFWrJ6G78ykIRFNjeduCGCm')
 
 
 def create_text():
