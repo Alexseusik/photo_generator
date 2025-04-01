@@ -4,7 +4,6 @@
 import telebot
 from telebot import types
 from image_generator import generate_image
-from chat_text_gen import create_text
 
 # Ваш токен, отриманий від BotFather
 bot_token = '6328902020:AAHYKlkCtqCzcuy5asECY-Gw55FREpuZBJk'
@@ -35,10 +34,8 @@ def send_image(message):
 
     image_path = generate_image()
 
-    caption_text = create_text()
-
     with open(image_path, 'rb') as photo:
-        bot.send_photo(message.chat.id, photo, caption=caption_text)
+        bot.send_photo(message.chat.id, photo)
 
 
 if __name__ == '__main__':
