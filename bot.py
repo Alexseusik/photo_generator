@@ -4,9 +4,10 @@
 import telebot
 from telebot import types
 from image_generator import generate_image
+import os
 
 # Ваш токен, отриманий від BotFather
-bot_token = '6328902020:AAHYKlkCtqCzcuy5asECY-Gw55FREpuZBJk'
+bot_token = os.getenv("TELEGRAM_TOKEN")
 bot = telebot.TeleBot(bot_token)
 
 

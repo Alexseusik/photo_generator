@@ -115,8 +115,8 @@ def get_all_data():
 
         all_data['today_date'] = today_date_str
 
-        locale.setlocale(locale.LC_TIME, 'uk_UA.UTF-8')
-        day_of_week = datetime.now().strftime('%A').upper()
+        days_ua = ['ПОНЕДІЛОК', 'ВІВТОРОК', 'СЕРЕДА', 'ЧЕТВЕР', 'П’ЯТНИЦЯ', 'СУБОТА', 'НЕДІЛЯ']
+        day_of_week = days_ua[datetime.now().weekday()]
         all_data['day_of_week'] = day_of_week
 
     else:
